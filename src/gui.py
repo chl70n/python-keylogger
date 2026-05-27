@@ -41,6 +41,7 @@ class KeyloggerGUI:
 
         self._keys_captured: int = 0
         self._is_recording: bool = False
+        self._after_id: str | None = None
         self._current_window: str = "—"
 
         self._root = tk.Tk()
@@ -156,13 +157,19 @@ class KeyloggerGUI:
         self._lbl_status.config(text="●  Recording", fg="#2d8a4e")
 
         self._append_text("=== Recording started ===\n\n")
-        self._root.after(self.REFRESH_MS, self._refresh)
+        self._after_id = self._root.after(self.REFRESH_MS, self._refresh)
 
     def _stop_recording(self) -> None:
         self._is_recording = False
+        if self._after_id is not None:
+            self._root.after_cancel(self._after_id)
+            self._after_id = None
         self._listener.stop()
         self._window_tracker.stop()
-        self._file_logger.end_session()
+        try:
+            self._file_logger.end_session()
+        except LogWriteError as exc:
+            messagebox.showerror("Log Error", str(exc))
 
         self._btn_start.config(state=tk.NORMAL)
         self._btn_stop.config(state=tk.DISABLED)
@@ -204,7 +211,7 @@ class KeyloggerGUI:
 
             self._queue.task_done()
 
-        self._root.after(self.REFRESH_MS, self._refresh)
+        self._after_id = self._root.after(self.REFRESH_MS, self._refresh)
 
     # ------------------------------------------------------------------
     # Helpers
