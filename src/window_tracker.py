@@ -27,6 +27,8 @@ class WindowTracker:
     # ------------------------------------------------------------------
 
     def start(self) -> None:
+        if self._thread is not None and self._thread.is_alive():
+            raise RuntimeError("WindowTracker already running. Call stop() first.")
         self._stop_event.clear()
         self._last_title = ""
         self._thread = threading.Thread(target=self._run, daemon=True)
