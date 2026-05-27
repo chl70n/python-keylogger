@@ -10,5 +10,6 @@ build/
 venv/
 env/
 .claude/
+~/
 test_output.txt
 nul
