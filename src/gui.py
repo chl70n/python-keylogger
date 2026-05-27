@@ -149,6 +149,15 @@ class KeyloggerGUI:
 
         self._is_recording = True
         self._keys_captured = 0
+
+        # Drain any stale events left in the queue from a previous session.
+        while True:
+            try:
+                self._queue.get_nowait()
+                self._queue.task_done()
+            except queue.Empty:
+                break
+
         self._window_tracker.start()
         self._listener.start()
 

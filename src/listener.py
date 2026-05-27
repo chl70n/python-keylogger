@@ -85,7 +85,16 @@ class KeyboardListener:
         """
         if self._restart_count < self.MAX_RESTARTS:
             self._restart_count += 1
+            print(
+                f"[listener] restart {self._restart_count}/{self.MAX_RESTARTS} after error: {exc}",
+                file=__import__("sys").stderr,
+            )
             self._launch()
+        else:
+            print(
+                f"[listener] max restarts ({self.MAX_RESTARTS}) reached — listener stopped.",
+                file=__import__("sys").stderr,
+            )
 
     def _on_press(self, key) -> None:
         try:
