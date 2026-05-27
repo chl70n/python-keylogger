@@ -32,7 +32,7 @@ SPECIAL_KEY_MAP: dict = {
 }
 
 
-def format_key(key) -> str:
+def format_key(key: kb.Key | kb.KeyCode) -> str:
     """Convert a pynput key object to a human-readable string.
 
     - Printable characters  → the character itself (e.g. "a", "A", "5", "!")
@@ -72,8 +72,20 @@ class KeyboardListener:
     # ------------------------------------------------------------------
 
     def _launch(self) -> None:
-        self._listener = kb.Listener(on_press=self._on_press)
+        self._listener = kb.Listener(
+            on_press=self._on_press,
+            on_error=self._on_error,
+        )
         self._listener.start()
+
+    def _on_error(self, exc: Exception) -> None:
+        """Called by pynput when the listener encounters an unhandled exception.
+
+        Auto-restarts up to MAX_RESTARTS times.
+        """
+        if self._restart_count < self.MAX_RESTARTS:
+            self._restart_count += 1
+            self._launch()
 
     def _on_press(self, key) -> None:
         try:
