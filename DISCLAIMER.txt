@@ -1,0 +1,16 @@
+DISCLAIMER — Educational Use Only
+===================================
+
+This software is provided for EDUCATIONAL and SECURITY RESEARCH purposes
+only. It demonstrates how keyboard input capture works so that developers
+and security students can understand, detect, and defend against such
+techniques.
+
+USE RESTRICTIONS:
+- Only run this software on machines you OWN or have EXPLICIT WRITTEN
+  AUTHORIZATION to monitor.
+- Deploying a keylogger on any device without the owner's informed consent
+  is ILLEGAL in most jurisdictions and a serious ethical violation.
+- The author(s) accept no liability for misuse of this software.
+
+By running this software you confirm you have read and agree to these terms.
