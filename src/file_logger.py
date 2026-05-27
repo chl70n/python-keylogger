@@ -30,7 +30,7 @@ class FileLogger:
             f"\n=== Session ended: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===\n"
         )
 
-    def write_event(self, event) -> None:
+    def write_event(self, event: "KeyEvent | WindowEvent") -> None:
         """Format and append a single event to today's log file."""
         line = self._format_event(event)
         if line:
@@ -44,7 +44,7 @@ class FileLogger:
         date_str = datetime.now().strftime("%Y-%m-%d")
         return self._logs_dir / f"keylog_{date_str}.log"
 
-    def _format_event(self, event) -> str:
+    def _format_event(self, event: "KeyEvent | WindowEvent") -> str:
         if isinstance(event, KeyEvent):
             return f"[{event.timestamp}] {event.key}"
         if isinstance(event, WindowEvent):
@@ -55,5 +55,5 @@ class FileLogger:
         try:
             with open(self._get_log_path(), "a", encoding="utf-8") as fh:
                 fh.write(text)
-        except PermissionError as exc:
+        except OSError as exc:
             raise LogWriteError(f"Cannot write to log file: {exc}") from exc

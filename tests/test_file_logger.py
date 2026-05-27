@@ -1,5 +1,4 @@
 import pytest
-import time
 from pathlib import Path
 from src.events import KeyEvent, WindowEvent
 from src.file_logger import FileLogger, LogWriteError
